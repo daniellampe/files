@@ -1,0 +1,29 @@
+import sys
+import json
+import operator
+import itertools
+
+def main():
+
+  elofordulas = {}
+  sorrend = {}
+  darabszam = 0
+
+  for line in open(sys.argv[1]):
+    tweets = json.loads(line)
+    try:
+      hashtags=tweets['entities']['hashtags']
+      for line in hashtags:
+        hashtag=line['text'].encode('utf-8')
+        if hashtag not in elofordulas:
+          elofordulas[hashtag]=1
+        else:
+          elofordulas[hashtag]=elofordulas.get(hashtag)+1        
+    except:
+      pass
+  
+  for id in range(0,10):
+    print sorted(elofordulas.iteritems(),key=operator.itemgetter(1),reverse=True)[id][0],sorted(elofordulas.iteritems(),key=operator.itemgetter(1),reverse=True)[id][1]
+
+if __name__ == '__main__':
+  main()
