@@ -1,0 +1,27 @@
+import sys
+import json
+
+def main():
+  
+  #elore megadott szotar tab delimited bontasa
+  afinnfile = open(sys.argv[1])
+  scores = {}
+  for line in afinnfile:
+    term, score = line.split("\t")
+    scores[term] = int(score)
+
+  #twitter raw data bontasa tweetekre
+  for line in open(sys.argv[2]):
+    score = 0
+    tweets = json.loads(line)
+    
+    # szoveget tartalmazo tweetbol szoveg kinyerese es szavakra bontasa
+    if tweets.get('text'):
+      tweet = tweets['text'].encode('utf8').split()
+      for word in tweet:
+        score += scores.get(word, 0)
+      print int(score)
+
+
+if __name__ == '__main__':
+  main()
